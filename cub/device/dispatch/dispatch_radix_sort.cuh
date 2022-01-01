@@ -1060,7 +1060,7 @@ struct DispatchRadixSort :
                     ActivePolicyT::SingleTilePolicy::ITEMS_PER_THREAD, 1, begin_bit, ActivePolicyT::SingleTilePolicy::RADIX_BITS);
 
             // Invoke upsweep_kernel with same grid size as downsweep_kernel
-            THRUST_NS_QUALIFIER::cuda_cub::launcher::triple_chevron(
+            thrust::cuda_cub::launcher::triple_chevron(
                 1, ActivePolicyT::SingleTilePolicy::BLOCK_THREADS, 0, stream
             ).doit(single_tile_kernel,
                 d_keys.Current(),
@@ -1123,7 +1123,7 @@ struct DispatchRadixSort :
             int pass_spine_length = pass_config.even_share.grid_size * pass_config.radix_digits;
 
             // Invoke upsweep_kernel with same grid size as downsweep_kernel
-            THRUST_NS_QUALIFIER::cuda_cub::launcher::triple_chevron(
+            thrust::cuda_cub::launcher::triple_chevron(
                 pass_config.even_share.grid_size,
                 pass_config.upsweep_config.block_threads, 0, stream
             ).doit(pass_config.upsweep_kernel,
@@ -1145,7 +1145,7 @@ struct DispatchRadixSort :
                 1, pass_config.scan_config.block_threads, (long long) stream, pass_config.scan_config.items_per_thread);
 
             // Invoke scan_kernel
-            THRUST_NS_QUALIFIER::cuda_cub::launcher::triple_chevron(
+            thrust::cuda_cub::launcher::triple_chevron(
                 1, pass_config.scan_config.block_threads, 0, stream
             ).doit(pass_config.scan_kernel,
                 d_spine,
@@ -1163,7 +1163,7 @@ struct DispatchRadixSort :
                 pass_config.downsweep_config.items_per_thread, pass_config.downsweep_config.sm_occupancy);
 
             // Invoke downsweep_kernel
-            THRUST_NS_QUALIFIER::cuda_cub::launcher::triple_chevron(
+            thrust::cuda_cub::launcher::triple_chevron(
                 pass_config.even_share.grid_size,
                 pass_config.downsweep_config.block_threads, 0, stream
             ).doit(pass_config.downsweep_kernel,
@@ -1752,7 +1752,7 @@ struct DispatchSegmentedRadixSort :
                       pass_bits);
             }
 
-            THRUST_NS_QUALIFIER::cuda_cub::launcher::triple_chevron(
+            thrust::cuda_cub::launcher::triple_chevron(
                 num_segments, pass_config.segmented_config.block_threads, 0,
                 stream
             ).doit(pass_config.segmented_kernel,
